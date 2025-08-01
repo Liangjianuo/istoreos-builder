@@ -39,9 +39,11 @@ jobs:
         cp -r imagebuilder/bin/targets/*/* output/
 
     - name: 🚀 上传到 Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v2.2.1
       with:
         tag_name: ${{ github.event.inputs.tag }}
-        files: output/*
+        files: |
+          output/*squashfs-combined-efi.img.gz
+        token: ${{ secrets.GITHUB_TOKEN }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
