@@ -35,15 +35,17 @@ jobs:
 
     - name: 📦 打包固件
       run: |
-        mkdir -p output
-        cp -r imagebuilder/bin/targets/*/* output/
+        echo "打印bin目录"
+        ls -lah imagebuilder/bin/targets/x86/64/
+        ehco "打印 github.workspace "
+        ls -lah ${{ github.workspace }}/
 
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v2.2.1
       with:
         tag_name: ${{ github.event.inputs.tag }}
         files: |
-          output/*squashfs-combined-efi.img.gz
+          ${{ github.workspace }}/imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
         token: ${{ secrets.GITHUB_TOKEN }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
