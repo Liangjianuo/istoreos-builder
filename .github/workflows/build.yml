@@ -28,7 +28,7 @@ jobs:
       
     - name: ⏬ 下载 ImageBuilder
       run: |
-        curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/${{ github.event.inputs.tag }}/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
+        curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/20250725/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
         mv istoreos-imagebuilder-* imagebuilder
 
