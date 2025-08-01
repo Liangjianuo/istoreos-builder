@@ -37,8 +37,9 @@ jobs:
       run: |
         echo "打印bin目录"
         ls -lah imagebuilder/bin/targets/x86/64/
-        ehco "打印 github.workspace "
+        echo "打印 github.workspace "
         ls -lah ${{ github.workspace }}/
+        echo "打印结束"
 
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v2.2.1
