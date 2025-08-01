@@ -46,7 +46,7 @@ jobs:
       with:
         tag_name: ${{ github.event.inputs.tag }}
         files: |
-          ${{ github.workspace }}/imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
+          imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
         token: ${{ secrets.GITHUB_TOKEN }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
