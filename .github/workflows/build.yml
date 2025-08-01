@@ -1,0 +1,47 @@
+name: 📦 Build iStoreOS Firmware
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "发布标签（如 20250725）"
+        required: true
+      packages:
+        description: "自定义软件包名（空格分隔）"
+        required: false
+        default: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: ⚙️ 安装依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libncurses5-dev zstd curl unzip
+
+    - name: ⏬ 下载 ImageBuilder
+      run: |
+        curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/${{ github.event.inputs.tag }}/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
+        tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
+        mv istoreos-imagebuilder-* imagebuilder
+
+    - name: 🧱 构建固件
+      working-directory: ./imagebuilder
+      run: |
+        make image \
+          PACKAGES="${{ github.event.inputs.packages }}" \
+
+    - name: 📦 打包固件
+      run: |
+        mkdir -p output
+        cp -r imagebuilder/bin/targets/*/* output/
+
+    - name: 🚀 上传到 Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.event.inputs.tag }}
+        files: output/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
