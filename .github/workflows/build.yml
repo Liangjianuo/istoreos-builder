@@ -21,6 +21,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential libncurses5-dev zstd curl unzip
 
+    - name: 🧪 打印输入 tag
+      run: |
+        echo "输入的 tag 是：${{ github.event.inputs.tag }}"
+        echo "输入的 PACKAGES 是：${{ github.event.inputs.packages }}"
+      
     - name: ⏬ 下载 ImageBuilder
       run: |
         curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/${{ github.event.inputs.tag }}/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
