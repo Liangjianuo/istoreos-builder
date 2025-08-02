@@ -117,6 +117,7 @@ PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-cifs-mount-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-unishare-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
 
 # LuCI 主题与功能
 PACKAGES="$PACKAGES luci-theme-argon"
@@ -128,25 +129,8 @@ PACKAGES="$PACKAGES luci-app-cifs-mount"
 # SFTP 支持
 PACKAGES="$PACKAGES openssh-sftp-server"
 
-# Docker 插件根据需要添加
-if [ "$INCLUDE_DOCKER" = "yes" ]; then
-  PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
-else
-  PACKAGES="$PACKAGES -luci-i18n-dockerman-zh-cn"
-fi
-
 # 追加自定义包
 PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
-
-
-# 3️⃣ 根据是否包含 Docker 插件追加
-if [ "$INCLUDE_DOCKER" = "yes" ]; then
-    PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
-    echo "✅ Adding Docker package: luci-i18n-dockerman-zh-cn"
-else
-    PACKAGES="$PACKAGES -luci-i18n-dockerman-zh-cn"
-    echo "🚫 Excluding Docker package: luci-i18n-dockerman-zh-cn"
-fi
 
 
 # 若构建openclash 则添加内核
@@ -168,7 +152,7 @@ fi
 echo "开始构建......打印所有包名===="
 echo "$PACKAGES"
 
-make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="files"
+make image PACKAGES="$PACKAGES" FILES="files"
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
