@@ -129,6 +129,7 @@ PACKAGES="$PACKAGES luci-app-cifs-mount"
 
 # SFTP 支持
 PACKAGES="$PACKAGES openssh-sftp-server"
+PACKAGES="$PACKAGES coreutils"
 
 # 追加自定义包
 PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
