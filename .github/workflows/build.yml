@@ -51,7 +51,6 @@ jobs:
       run: |
         echo "打印imagebuilder目录结构"
         tree -L 1
-        echo "打印imagebuilder/packages目录结构"
-        ls -lah packages
+        bash ./build24.sh
 
     
