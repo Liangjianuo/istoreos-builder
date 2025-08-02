@@ -1,6 +1,6 @@
 #!/bin/bash
 # 此脚本在Imagebuilder 根目录运行
-source custom-packages.sh
+source shell/custom-packages.sh
 echo "第三方软件包: $CUSTOM_PACKAGES"
 LOGFILE="/tmp/uci-defaults-log.txt"
 echo "Starting 99-custom.sh at $(date)" >> $LOGFILE
@@ -21,7 +21,7 @@ else
   echo "✅ Run files copied to extra-packages:"
   ls -lh extra-packages/*.run
   # 解压并拷贝ipk到packages目录
-  sh prepare-packages.sh
+  sh shell/prepare-packages.sh
   ls -lah packages/
 fi
 
