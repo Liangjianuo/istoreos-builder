@@ -130,7 +130,7 @@ PACKAGES="$PACKAGES luci-app-cifs-mount"
 PACKAGES="$PACKAGES openssh-sftp-server"
 
 # 追加自定义包
-PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
+#PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 
 
 # 若构建openclash 则添加内核
@@ -152,14 +152,9 @@ fi
 echo "开始构建......打印所有包名===="
 echo "$PACKAGES"
 
-# 清理前后空格
-TRIMMED_PACKAGES="$(echo "$PACKAGES" | xargs)"
-
-# 调试输出单独每个包
-echo "$TRIMMED_PACKAGES" | tr ' ' '\n' > check_packages.txt
 
 # 开始构建
-make image PACKAGES="$TRIMMED_PACKAGES" FILES="files"
+make image PACKAGES="$PACKAGES" FILES="files"
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
