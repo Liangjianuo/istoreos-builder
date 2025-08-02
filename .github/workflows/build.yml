@@ -51,22 +51,7 @@ jobs:
       run: |
         echo "打印imagebuilder目录结构"
         tree -L 1
-        bash ./build24.sh
+        echo "打印imagebuilder/packages目录结构"
+        ls -lah ./imagebuilder/packages
 
-    - name: 📦 打印产出固件
-      run: |
-        echo "打印bin目录"
-        ls -lah imagebuilder/bin/targets/x86/64/
-        echo "打印 github.workspace "
-        ls -lah ${{ github.workspace }}/
-        echo "打印结束"
-
-    - name: 🚀 上传到 Release
-      uses: softprops/action-gh-release@v2.2.1
-      with:
-        tag_name: iStoreOS-24.10.2-x86-efi
-        files: |
-          imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
-        token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
