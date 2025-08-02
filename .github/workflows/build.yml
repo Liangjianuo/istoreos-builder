@@ -1,15 +1,17 @@
-name: 📦 Build iStoreOS Firmware
+name: 📦 Build iStoreOS 24.10.2 x86_64
 
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "发布标签（如 20250725）"
+      include_docker:
+        description: |
+          是否编译 Docker 插件
         required: true
-      packages:
-        description: "自定义软件包名（空格分隔）"
-        required: false
-        default: ""
+        default: 'yes'
+        type: choice
+        options:
+          - 'yes'
+          - 'no'
 
 jobs:
   build:
@@ -17,29 +19,41 @@ jobs:
 
     steps:
     
-    - name: 🧪 打印输入 tag
-      run: |
-        echo "输入的 tag 是：${{ github.event.inputs.tag }}"
-        echo "输入的 PACKAGES 是：${{ github.event.inputs.packages }}"
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set executable permissions
+      run: | 
+        chmod +x x86/build24.sh
+        chmod +x shell/*.sh
+        
         
     - name: ⚙️ 安装依赖
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libncurses5-dev zstd curl unzip
+        sudo apt-get install -y build-essential libncurses5-dev zstd curl unzip tree
       
     - name: ⏬ 下载 ImageBuilder
       run: |
         curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/20250725/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
         mv istoreos-imagebuilder-* imagebuilder
+        cp x86/build24.sh imagebuilder/
+        cp shell/prepare-packages.sh imagebuilder/
+        cp shell/custom-packages.sh imagebuilder/
+        mkdir -p imagebuilder/files/etc/uci-defaults
+        cp files/etc/uci-defaults/99-custom.sh imagebuilder/files/etc/uci-defaults/
+        echo "打印action目录结构"
+        tree
 
-    - name: 🧱 构建固件
+    - name: 🧱 构建iStoreOS固件
       working-directory: ./imagebuilder
       run: |
-        make image \
-          PACKAGES="${{ github.event.inputs.packages }}" \
+        echo "打印imagebuilder目录结构"
+        tree
+        sh ./build24.sh
 
-    - name: 📦 打包固件
+    - name: 📦 打印产出固件
       run: |
         echo "打印bin目录"
         ls -lah imagebuilder/bin/targets/x86/64/
@@ -50,7 +64,7 @@ jobs:
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v2.2.1
       with:
-        tag_name: ${{ github.event.inputs.tag }}
+        tag_name: iStoreOS-24.10.2-x86-efi
         files: |
           imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
         token: ${{ secrets.GITHUB_TOKEN }}
