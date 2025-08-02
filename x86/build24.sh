@@ -156,7 +156,7 @@ echo "$PACKAGES"
 
 
 # 开始构建
-make image PACKAGES="$PACKAGES" FILES="files"
+make image V=s FORCE=1 PACKAGES="$PACKAGES" FILES="files"
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
