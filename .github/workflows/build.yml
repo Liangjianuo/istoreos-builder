@@ -45,6 +45,9 @@ jobs:
         cp files/etc/uci-defaults/99-custom.sh imagebuilder/files/etc/uci-defaults/
         echo "打印action目录结构"
         tree -L 1
+        wget -O repositories.conf https://raw.githubusercontent.com/wukongdaily/ib-overlay/refs/heads/master/repositories.conf
+        echo "打印repositories"
+        cat repositories.conf
 
     - name: 🧱 构建iStoreOS固件
       working-directory: ./imagebuilder
