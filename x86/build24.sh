@@ -152,7 +152,14 @@ fi
 echo "开始构建......打印所有包名===="
 echo "$PACKAGES"
 
-make image PACKAGES="$PACKAGES" FILES="files"
+# 清理前后空格
+TRIMMED_PACKAGES="$(echo "$PACKAGES" | xargs)"
+
+# 调试输出单独每个包
+echo "$TRIMMED_PACKAGES" | tr ' ' '\n' > check_packages.txt
+
+# 开始构建
+make image PACKAGES="$TRIMMED_PACKAGES" FILES="files"
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
