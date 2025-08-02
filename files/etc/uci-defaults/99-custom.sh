@@ -12,10 +12,11 @@ uci set "dhcp.@domain[-1].ip=203.107.6.88"
 
 # 设置主机名
 uci set system.@system[0].hostname='iStoreOS'
+uci set system.@system[0].timezone='CST-8'
+uci set system.@system[0].zonename='Asia/Shanghai'
 
 # 设置默认语言为简体中文
 uci set luci.main.lang='zh_cn'
-
 # 保存设置
 uci commit system
 uci commit luci
