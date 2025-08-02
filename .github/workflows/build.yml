@@ -51,16 +51,16 @@ jobs:
         cp files/etc/uci-defaults/99-custom.sh imagebuilder/files/etc/uci-defaults/
         echo "打印action目录结构"
         tree -L 1
-        echo "打印repositories"
-        cat repositories.conf
-        echo "打印Makefile"
-        cat Makefile |grep here
 
     - name: 🧱 构建iStoreOS固件
       working-directory: ./imagebuilder
       run: |
         echo "打印imagebuilder目录结构"
         tree -L 1
+        echo "打印repositories"
+        cat repositories.conf
+        echo "打印Makefile"
+        cat Makefile |grep here
         bash ./build24.sh
 
     - name: 📦 打印产出固件
