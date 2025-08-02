@@ -38,16 +38,24 @@ jobs:
         curl -L -o imagebuilder.tar.zst https://github.com/wukongdaily/istoreos-builder/releases/download/20250725/istoreos-imagebuilder-x86-64.Linux-x86_64.tar.zst
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
         mv istoreos-imagebuilder-* imagebuilder
+        
+    
+    - name: ⏬ 复制必备文件
+      working-directory: ./imagebuilder
+      run: |
         cp x86/build24.sh imagebuilder/
+        cp x86/Makefile imagebuilder/
+        cp x86/repositories.conf imagebuilder/
         cp shell/prepare-packages.sh imagebuilder/
         cp shell/custom-packages.sh imagebuilder/
         mkdir -p imagebuilder/files/etc/uci-defaults
         cp files/etc/uci-defaults/99-custom.sh imagebuilder/files/etc/uci-defaults/
         echo "打印action目录结构"
         tree -L 1
-        wget -O repositories.conf https://raw.githubusercontent.com/wukongdaily/ib-overlay/refs/heads/master/repositories.conf
         echo "打印repositories"
         cat repositories.conf
+        echo "打印Makefile"
+        cat Makefile |grep here
 
     - name: 🧱 构建iStoreOS固件
       working-directory: ./imagebuilder
@@ -56,4 +64,18 @@ jobs:
         tree -L 1
         bash ./build24.sh
 
-    
+    - name: 📦 打印产出固件
+      run: |
+        echo "打印bin目录"
+        ls -lah imagebuilder/bin/targets/x86/64/
+
+    - name: 🚀 上传到 Release
+      uses: softprops/action-gh-release@v2.2.1
+      with:
+        tag_name: iStoreOS-24.10.2-x86-efi
+        files: |
+          imagebuilder/bin/targets/x86/64/*squashfs-combined-efi.img.gz
+        token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
