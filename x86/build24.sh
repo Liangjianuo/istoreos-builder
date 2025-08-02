@@ -104,7 +104,7 @@ PACKAGES="$PACKAGES kmod-forcedeth"
 PACKAGES="$PACKAGES kmod-fs-vfat"
 PACKAGES="$PACKAGES kmod-tg3"
 PACKAGES="$PACKAGES kmod-drm-i915"
-#PACKAGES="$PACKAGES -libustream-mbedtls"
+PACKAGES="$PACKAGES -libustream-mbedtls"
 
 # LuCI 中文本地化与插件
 PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
@@ -130,7 +130,7 @@ PACKAGES="$PACKAGES luci-app-cifs-mount"
 PACKAGES="$PACKAGES openssh-sftp-server"
 
 # 追加自定义包
-#PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
+PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 
 
 # 若构建openclash 则添加内核
