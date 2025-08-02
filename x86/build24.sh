@@ -30,40 +30,114 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
 
 # ============= iStoreOS仓库内的插件==============
 # 定义所需安装的包列表 下列插件你都可以自行删减
-# 1️⃣ 定义基础包为数组
-PACKAGES_LIST=(
-  base-files block-mount ca-bundle dnsmasq-full dropbear fdisk firewall4 fstools
-  grub2-bios-setup i915-firmware-dmc kmod-8139cp kmod-8139too kmod-button-hotplug kmod-e1000e
-  kmod-fs-f2fs kmod-i40e kmod-igb kmod-igbvf kmod-igc kmod-ixgbe kmod-ixgbevf
-  kmod-nf-nathelper kmod-nf-nathelper-extra kmod-nft-offload kmod-pcnet32 kmod-r8101
-  kmod-r8125 kmod-r8126 kmod-r8168 kmod-tulip kmod-usb-hid kmod-usb-net
-  kmod-usb-net-asix kmod-usb-net-asix-ax88179 kmod-usb-net-rtl8150 kmod-vmxnet3
-  libc libgcc libustream-openssl logd luci-app-package-manager luci-compat
-  luci-lib-base luci-lib-ipkg luci-light mkf2fs mtd netifd nftables odhcp6c
-  odhcpd-ipv6only opkg partx-utils ppp ppp-mod-pppoe procd-ujail uci uclient-fetch
-  urandom-seed urngd kmod-amazon-ena kmod-amd-xgbe kmod-bnx2 kmod-e1000 kmod-dwmac-intel
-  kmod-forcedeth kmod-fs-vfat kmod-tg3 kmod-drm-i915 -libustream-mbedtls
 
-  luci-i18n-package-manager-zh-cn
-  luci-i18n-argon-zh-cn
-  luci-i18n-argon-config-zh-cn
-  luci-i18n-filetransfer-zh-cn
-  luci-i18n-quickstart-zh-cn
-  luci-i18n-base-zh-cn
-  luci-i18n-firewall-zh-cn
-  luci-i18n-ttyd-zh-cn
-  luci-i18n-cifs-mount-zh-cn
-  luci-i18n-unishare-zh-cn
-  luci-theme-argon
-  luci-app-argon-config
-  luci-app-filetransfer
-  openssh-sftp-server
-  luci-app-ttyd
-  luci-app-cifs-mount
-)
+# 初始化变量
+PACKAGES=""
 
-# 2️⃣ 拼接数组 + 自定义包，形成最终变量
-PACKAGES="${PACKAGES_LIST[*]} $CUSTOM_PACKAGES"
+# 基础系统与驱动
+PACKAGES="$PACKAGES base-files"
+PACKAGES="$PACKAGES block-mount"
+PACKAGES="$PACKAGES ca-bundle"
+PACKAGES="$PACKAGES dnsmasq-full"
+PACKAGES="$PACKAGES dropbear"
+PACKAGES="$PACKAGES fdisk"
+PACKAGES="$PACKAGES firewall4"
+PACKAGES="$PACKAGES fstools"
+PACKAGES="$PACKAGES grub2-bios-setup"
+PACKAGES="$PACKAGES i915-firmware-dmc"
+PACKAGES="$PACKAGES kmod-8139cp"
+PACKAGES="$PACKAGES kmod-8139too"
+PACKAGES="$PACKAGES kmod-button-hotplug"
+PACKAGES="$PACKAGES kmod-e1000e"
+PACKAGES="$PACKAGES kmod-fs-f2fs"
+PACKAGES="$PACKAGES kmod-i40e"
+PACKAGES="$PACKAGES kmod-igb"
+PACKAGES="$PACKAGES kmod-igbvf"
+PACKAGES="$PACKAGES kmod-igc"
+PACKAGES="$PACKAGES kmod-ixgbe"
+PACKAGES="$PACKAGES kmod-ixgbevf"
+PACKAGES="$PACKAGES kmod-nf-nathelper"
+PACKAGES="$PACKAGES kmod-nf-nathelper-extra"
+PACKAGES="$PACKAGES kmod-nft-offload"
+PACKAGES="$PACKAGES kmod-pcnet32"
+PACKAGES="$PACKAGES kmod-r8101"
+PACKAGES="$PACKAGES kmod-r8125"
+PACKAGES="$PACKAGES kmod-r8126"
+PACKAGES="$PACKAGES kmod-r8168"
+PACKAGES="$PACKAGES kmod-tulip"
+PACKAGES="$PACKAGES kmod-usb-hid"
+PACKAGES="$PACKAGES kmod-usb-net"
+PACKAGES="$PACKAGES kmod-usb-net-asix"
+PACKAGES="$PACKAGES kmod-usb-net-asix-ax88179"
+PACKAGES="$PACKAGES kmod-usb-net-rtl8150"
+PACKAGES="$PACKAGES kmod-vmxnet3"
+PACKAGES="$PACKAGES libc"
+PACKAGES="$PACKAGES libgcc"
+PACKAGES="$PACKAGES libustream-openssl"
+PACKAGES="$PACKAGES logd"
+PACKAGES="$PACKAGES luci-app-package-manager"
+PACKAGES="$PACKAGES luci-compat"
+PACKAGES="$PACKAGES luci-lib-base"
+PACKAGES="$PACKAGES luci-lib-ipkg"
+PACKAGES="$PACKAGES luci-light"
+PACKAGES="$PACKAGES mkf2fs"
+PACKAGES="$PACKAGES mtd"
+PACKAGES="$PACKAGES netifd"
+PACKAGES="$PACKAGES nftables"
+PACKAGES="$PACKAGES odhcp6c"
+PACKAGES="$PACKAGES odhcpd-ipv6only"
+PACKAGES="$PACKAGES opkg"
+PACKAGES="$PACKAGES partx-utils"
+PACKAGES="$PACKAGES ppp"
+PACKAGES="$PACKAGES ppp-mod-pppoe"
+PACKAGES="$PACKAGES procd-ujail"
+PACKAGES="$PACKAGES uci"
+PACKAGES="$PACKAGES uclient-fetch"
+PACKAGES="$PACKAGES urandom-seed"
+PACKAGES="$PACKAGES urngd"
+PACKAGES="$PACKAGES kmod-amazon-ena"
+PACKAGES="$PACKAGES kmod-amd-xgbe"
+PACKAGES="$PACKAGES kmod-bnx2"
+PACKAGES="$PACKAGES kmod-e1000"
+PACKAGES="$PACKAGES kmod-dwmac-intel"
+PACKAGES="$PACKAGES kmod-forcedeth"
+PACKAGES="$PACKAGES kmod-fs-vfat"
+PACKAGES="$PACKAGES kmod-tg3"
+PACKAGES="$PACKAGES kmod-drm-i915"
+PACKAGES="$PACKAGES -libustream-mbedtls"
+
+# LuCI 中文本地化与插件
+PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-argon-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-argon-config-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-filetransfer-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-quickstart-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-base-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-cifs-mount-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-unishare-zh-cn"
+
+# LuCI 主题与功能
+PACKAGES="$PACKAGES luci-theme-argon"
+PACKAGES="$PACKAGES luci-app-argon-config"
+PACKAGES="$PACKAGES luci-app-filetransfer"
+PACKAGES="$PACKAGES luci-app-ttyd"
+PACKAGES="$PACKAGES luci-app-cifs-mount"
+
+# SFTP 支持
+PACKAGES="$PACKAGES openssh-sftp-server"
+
+# Docker 插件根据需要添加
+if [ "$INCLUDE_DOCKER" = "yes" ]; then
+  PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
+else
+  PACKAGES="$PACKAGES -luci-i18n-dockerman-zh-cn"
+fi
+
+# 追加自定义包
+PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
+
 
 # 3️⃣ 根据是否包含 Docker 插件追加
 if [ "$INCLUDE_DOCKER" = "yes" ]; then
@@ -74,10 +148,6 @@ else
     echo "🚫 Excluding Docker package: luci-i18n-dockerman-zh-cn"
 fi
 
-echo "最终包列表："
-for pkg in $PACKAGES; do
-  echo " - $pkg"
-done
 
 # 若构建openclash 则添加内核
 if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
