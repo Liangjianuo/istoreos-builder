@@ -41,7 +41,6 @@ jobs:
         
     
     - name: ⏬ 复制必备文件
-      working-directory: ./imagebuilder
       run: |
         cp x86/build24.sh imagebuilder/
         cp x86/Makefile imagebuilder/
