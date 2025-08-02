@@ -55,13 +55,9 @@ luci-i18n-cifs-mount-zh-cn \
 luci-i18n-unishare-zh-cn \
 luci-theme-argon \
 luci-app-argon-config \
-
-# 文件传输相关
 luci-app-filetransfer \
 openssh-sftp-server \
-# TTY Web 控制台
 luci-app-ttyd \
-# CIFS 挂载支持
 luci-app-cifs-mount"
 
 # custom-packages.sh =======
