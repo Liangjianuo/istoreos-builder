@@ -10,7 +10,15 @@ uci add dhcp domain
 uci set "dhcp.@domain[-1].name=time.android.com"
 uci set "dhcp.@domain[-1].ip=203.107.6.88"
 
+# 设置主机名
+uci set system.@system[0].hostname='iStoreOS'
 
+# 设置默认语言为简体中文
+uci set luci.main.lang='zh_cn'
+
+# 保存设置
+uci commit system
+uci commit luci
 
 # 设置所有网口可访问网页终端
 uci delete ttyd.@ttyd[0].interface
