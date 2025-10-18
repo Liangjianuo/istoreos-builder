@@ -40,6 +40,10 @@ CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-mosdns-zh-cn"
 # 设置向导 by sirpdboy
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-netwizard"
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-netwizard-zh-cn"
+#自己添加
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-dufs"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-bypass"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-vssr"
 
 # ============= 若去除组件 则打开注释 ============================
 # 若去掉istore商店 则打开注释
