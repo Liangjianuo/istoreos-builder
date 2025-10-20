@@ -2,6 +2,15 @@
 # iStoreOS 首次运行时
 LOGFILE="/tmp/uci-defaults-log.txt"
 echo "Starting 99-custom.sh at $(date)" >>$LOGFILE
+
+# ============= 可配置的IP地址 =============
+# 单网口设备的IP配置
+SINGLE_PORT_IP=${SINGLE_PORT_IP:-"192.168.1.155"}
+SINGLE_PORT_NETMASK=${SINGLE_PORT_NETMASK:-"255.255.255.0"}
+SINGLE_PORT_GATEWAY=${SINGLE_PORT_GATEWAY:-"192.168.1.1"}
+SINGLE_PORT_DNS=${SINGLE_PORT_DNS:-"223.5.5.5"}
+
+
 # 设置默认防火墙规则，方便虚拟机首次访问 WebUI
 uci set firewall.@zone[1].input='ACCEPT'
 
@@ -46,14 +55,38 @@ ifnames=$(echo "$ifnames" | awk '{$1=$1};1')
 
 # 网络设置
 if [ "$count" -eq 1 ]; then
+    echo "单网口设备配置" >>$LOGFILE
+    
+    # ============= 单网口设备配置选项 =============
+    # 方案1: 使用静态IP（推荐用于旁路由）
+    uci set network.lan.proto='static'
+    uci set network.lan.ipaddr="$SINGLE_PORT_IP"
+    uci set network.lan.netmask="$SINGLE_PORT_NETMASK"
+    uci set network.lan.gateway="$SINGLE_PORT_GATEWAY"
+    uci set network.lan.dns="$SINGLE_PORT_DNS"
+    
+    # 可选：关闭DHCP服务器（如果作为旁路由）
+    uci set dhcp.lan.ignore='1'
+    
+    echo "单网口设置为静态IP: $SINGLE_PORT_IP" >>$LOGFILE
+    
+    # 方案2: 使用DHCP（如果需要动态获取IP，取消注释下面几行，并注释上面的静态IP配置）
+    # uci set network.lan.proto='dhcp'
+    # uci delete network.lan.ipaddr
+    # uci delete network.lan.netmask
+    # uci delete network.lan.gateway     
+    # uci delete network.lan.dns 
+    # echo "单网口设置为DHCP模式" >>$LOGFILE
+    
+    uci commit network
     # 单网口设备 类似于NAS模式 动态获取ip模式 具体ip地址取决于上一级路由器给它分配的ip 也方便后续你使用web页面设置旁路由
     # 单网口设备 不支持修改ip 不要在此处修改ip 单网口采用dhcp模式 删除默认的192.168.1.1
-    uci set network.lan.proto='dhcp'
-    uci delete network.lan.ipaddr
-    uci delete network.lan.netmask
-    uci delete network.lan.gateway     
-    uci delete network.lan.dns 
-    uci commit network
+    #uci set network.lan.proto='dhcp'
+   # uci delete network.lan.ipaddr
+    #uci delete network.lan.netmask
+   # uci delete network.lan.gateway     
+   # uci delete network.lan.dns 
+   # uci commit network
 elif [ "$count" -gt 1 ]; then
     # 提取第一个接口作为WAN
     wan_ifname=$(echo "$ifnames" | awk '{print $1}')
